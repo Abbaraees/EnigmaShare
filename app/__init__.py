@@ -1,7 +1,14 @@
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from flask_bcrypt import Bcrypt
 
 from config import Config
 
+
+db = SQLAlchemy()
+migrate = Migrate()
+bcrypt = Bcrypt()
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
@@ -11,6 +18,10 @@ def create_app(test_config=None):
     else:
         app.config.from_object(Config)
 
+    # initialiaze extensions
+    db.init_app(app)
+    migrate.init_app(app, db)
+    bcrypt.init_app(app)
 
     @app.route('/test')
     def test():
@@ -18,3 +29,5 @@ def create_app(test_config=None):
     
 
     return app
+
+from app import models
