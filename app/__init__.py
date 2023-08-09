@@ -2,6 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
+from flask_login import LoginManager
 
 from config import Config
 
@@ -9,6 +10,8 @@ from config import Config
 db = SQLAlchemy()
 migrate = Migrate()
 bcrypt = Bcrypt()
+login_manager = LoginManager()
+login_manager.login_view = 'auth.login'
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
@@ -22,6 +25,14 @@ def create_app(test_config=None):
     db.init_app(app)
     migrate.init_app(app, db)
     bcrypt.init_app(app)
+    login_manager.init_app(app)
+
+    #register blueprints
+    from app.auth import bp as auth_bp
+    app.register_blueprint(auth_bp, url_prefix='/auth')
+
+    from app.main import bp as main_bp
+    app.register_blueprint(main_bp)
 
     @app.route('/test')
     def test():
