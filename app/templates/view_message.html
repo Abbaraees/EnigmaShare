@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<a href="/">Back</a>
+<main>
+    <h1>View Message</h1>
+    <img src="{{ url_for('static', filename='/uploads/'+message.file) }}" alt="">
+    <form>
+        {% if message.encrypted %}
+        <input type="text" placeholder="Decryption Key">
+        {% endif %}
+        <button>Reveal text</button>
+    </form>
+    <p id="secret_msg"></p>
+</main>
+{% block scripts%}
+<script>
+    document.addEventListener('submit', (e) => {
+        e.preventDefault()
+        fetch('/reveal_text/{{message.id}}', {method: 'post'})
+            .then(resp => resp.json())
+            .then(data => document.getElementById("secret_msg").textContent = data.message)
+            .catch(e => document.getElementById("secret_msg").textContent = "An error occured!")
+    })
+</script>
+{% endblock scripts %}
+{% endblock content %}

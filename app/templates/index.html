@@ -1,4 +1,36 @@
 {% extends 'base.html' %}
 {%block content%}
 <h1>Welcome {{ current_user.username }}</h1>
+<div>
+    <a href="#">Send Message</a>
+    <a href="#">View Messages</a>
+    <a href="#">Upload Image</a>
+    <a href="#">Settings</a>
+</div>
+<div>
+    <h1>Messages</h1>
+    {% if messages %}
+        <img src="{{ url_for('static', filename='/uploads/secret_msg.png')}}" alt="">
+        <table>
+            <thead>
+                <tr>
+                    <td>Sender</td>
+                    <td>Receiver</td>
+                    <td>View Message</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for message in messages %}
+                    <tr>
+                        <td>{{ message.sender.username }}</td>
+                        <td>{{ message.receiver.username }}</td>
+                        <td><a href="{{ url_for('main.view_message', message_id=message.id)}}">View Message</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <h2>You don't have messages</h2>
+    {% endif %}
+</div>
 {% endblock content %}

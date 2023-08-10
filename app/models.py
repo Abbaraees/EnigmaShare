@@ -1,6 +1,7 @@
 from app import db
 from app import bcrypt
 from flask_login import UserMixin
+from sqlalchemy import or_
 
 from app import login_manager
 
@@ -43,6 +44,11 @@ class User(db.Model, UserMixin):
 
     def check_password(self, password):
         return bcrypt.check_password_hash(self.password_hash, password)
+    
+    def get_messages(self):
+        return Message.query.filter(
+           or_(Message.sender == self, Message.receiver == self)
+        ).all()
 
     def __repr__(self):
         return f"<User: {self.username}>"
