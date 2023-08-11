@@ -51,5 +51,23 @@ class User(db.Model, UserMixin):
            or_(Message.sender == self, Message.receiver == self)
         ).all()
 
+    def send_message(self, title, receiver, file):
+        message = Message(
+            title=title, 
+            receiver=receiver,
+            sender=self,
+            file=file
+        )
+
+        try:
+            db.session.add(message)
+            db.session.commit()
+
+        except:
+            return False
+        
+        return message
+
+
     def __repr__(self):
         return f"<User: {self.username}>"

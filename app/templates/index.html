@@ -2,7 +2,7 @@
 {%block content%}
 <h1>Welcome {{ current_user.username }}</h1>
 <div>
-    <a href="#">Send Message</a>
+    <a href="{{ url_for('main.send_message') }}">Send Message</a>
     <a href="#">View Messages</a>
     <a href="#">Upload Image</a>
     <a href="#">Settings</a>
@@ -14,6 +14,7 @@
         <table>
             <thead>
                 <tr>
+                    <td>Title</td>
                     <td>Sender</td>
                     <td>Receiver</td>
                     <td>View Message</td>
@@ -22,6 +23,7 @@
             <tbody>
                 {% for message in messages %}
                     <tr>
+                        <td>{{ message.title }}</td>
                         <td>{{ message.sender.username }}</td>
                         <td>{{ message.receiver.username }}</td>
                         <td><a href="{{ url_for('main.view_message', message_id=message.id)}}">View Message</a></td>
