@@ -12,6 +12,7 @@ def load_user(id):
 
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True, unique=True)
+    title = db.Column(db.String(255), nullable=False)
     file = db.Column(db.String(100))
     encrypted = db.Column(db.Boolean)
     sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
