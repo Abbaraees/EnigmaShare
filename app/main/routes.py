@@ -122,3 +122,10 @@ def send_message():
         flash("Failed to send message!")
         
     return render_template('send_message.html', form=form)
+
+
+@bp.route('/messages')
+def view_messages():
+    messages = current_user.get_messages()
+
+    return render_template('view_messages.html', messages=messages)
