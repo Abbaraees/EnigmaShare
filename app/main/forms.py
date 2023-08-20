@@ -12,3 +12,10 @@ class CreateMessageForm(FlaskForm):
     allow_encryption = BooleanField('Set Encryption')
     encryption_key = PasswordField('Encryption Key')
     submit = SubmitField("Send")
+
+
+class UploadImageForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
+    image = FileField("Image file", validators=[DataRequired()])
+    already_encrypted = BooleanField("Already encrypted")
+    submit = SubmitField("Upload")

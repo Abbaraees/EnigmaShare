@@ -6,7 +6,7 @@ from werkzeug.utils import secure_filename
 
 from app.main import bp
 from app.models import Message, User
-from app.main.forms import CreateMessageForm
+from app.main.forms import CreateMessageForm, UploadImageForm
 
 
 @bp.route('/')
@@ -129,3 +129,67 @@ def view_messages():
     messages = current_user.get_messages()
 
     return render_template('view_messages.html', messages=messages)
+
+
+@bp.route("/upload", methods=["GET", "POST"])
+def upload():
+    """
+    Route for uploading steganographic image.
+
+    This route enables users to upload pre-prepared steganographic images, where the user is both the sender
+    and the receiver of the message. Users can provide a title for the message and the steganographic image
+    file to be uploaded.
+
+    Args:
+        None
+
+    Returns:
+        If the request method is GET:
+            Renders the 'upload.html' template with a form to upload steganographic images.
+        
+        If the request method is POST and form validation succeeds:
+            - Uploads the steganographic image as a message.
+            - Associates the message with the user as both sender and receiver.
+            - If successful, redirects to the view_message route for the uploaded message.
+            - If unsuccessful, flashes an appropriate error message and renders the 'upload.html' template.
+
+    Raises:
+        None
+        
+    Note:
+        - Uses the UploadImageForm form for input validation.
+        - The file upload is saved to the UPLOADS_DIR specified in the app configuration.
+        - Users can indicate whether the uploaded image is already encrypted as a steganographic message.
+
+    Examples:
+        A user can upload a pre-prepared steganographic image using the 'upload.html' form, providing a title
+        for the message and the steganographic image file. The uploaded image will be treated as a message
+        where the user is both the sender and the receiver.
+    """
+    
+    form = UploadImageForm()
+    if form.validate_on_submit():
+          # Get the message data from the form
+        title = form.title.data
+        image = form.image.data
+
+        # Prepare the file name and destination
+        file_name = secure_filename(image.filename.lower())
+        file_dest = current_app.config['UPLOADS_DIR'] + f"/{file_name}"
+
+        message = current_user.send_message(
+            title=title,
+            file=file_name,
+            receiver=current_user,
+        )
+        message.encrypted = form.already_encrypted.data
+
+        if message:
+            image.save(file_dest)
+            flash("Message uploaded successfully")
+
+            return redirect(url_for('main.view_message', message_id=message.id))
+        
+        flash("Failed to upload message!")
+
+    return render_template("upload.html", form=form)
