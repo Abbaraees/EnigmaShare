@@ -1,32 +1,35 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Send Message</h1>
-<form action="" method="post" enctype="multipart/form-data">
-    {{ form.hidden_tag() }}
-    <p>
-        {{ form.title.label }}<br>
-        {{ form.title() }}
-    </p>
-    <p>
-        {{ form.message.label }}<br>
-        {{ form.message() }}
-    </p>
-    <p>
-        {{ form.receiver.label }}<br>
-        {{ form.receiver() }}
-    </p>
-    <p>
-        {{ form.file.label }}<br>
-        {{ form.file() }}
-    </p>
-    <p>
-        {{ form.allow_encryption.label }}
-        {{ form.allow_encryption() }}
-    </p>
-    <p>
-        {{ form.encryption_key.label }}<br>
-        {{ form.encryption_key(value="") }}
-    </p>
-    {{ form.submit()}}
-</form>
+<a href="{{ url_for('main.index') }}" class="back-btn">Back</a>
+<h2 class="page-title">Send Message</h2>
+<div class="form-container">
+    <form action="" method="post" enctype="multipart/form-data" class="auth-form">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.title.label }}<br>
+            {{ form.title() }}
+        </p>
+        <p>
+            {{ form.message.label }}<br>
+            {{ form.message() }}
+        </p>
+        <p>
+            {{ form.receiver.label }}<br>
+            {{ form.receiver() }}
+        </p>
+        <p>
+            {{ form.file.label }}<br>
+            {{ form.file() }}
+        </p>
+        <p>
+            {{ form.allow_encryption() }}
+            {{ form.allow_encryption.label }}
+        </p>
+        <p>
+            {{ form.encryption_key.label }}<br>
+            {{ form.encryption_key(value="") }}
+        </p>
+        {{ form.submit()}}
+    </form>
+</div>
 {% endblock content %}

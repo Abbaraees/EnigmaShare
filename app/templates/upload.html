@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
 <div>
-    <h1>Upload Image</h1>
+    <a href="/" class="back-btn">Back</a>
+    <h1 class="page-title">Upload Image</h1>
     <img src="" alt="" id="image-preview">
     <form action="" enctype="multipart/form-data" method="post">
         {{ form.hidden_tag() }}

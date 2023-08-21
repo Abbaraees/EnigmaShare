@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
 <div>
-    <h1>Messages</h1>
+    <a href="{{ url_for('main.index') }}" class="back-btn">Back</a>
+    <h1 class="page-title">Messages</h1>
     {% if messages %}
-        <img src="{{ url_for('static', filename='/uploads/secret_msg.png')}}" alt="">
-        <table>
+        <table class="message-table">
             <thead>
                 <tr>
                     <td>Title</td>
@@ -15,7 +15,7 @@
             </thead>
             <tbody>
                 {% for message in messages %}
-                    <tr>
+                    <tr style="margin-bottom: 200px;">
                         <td>{{ message.title }}</td>
                         <td>{{ message.sender.username }}</td>
                         <td>{{ message.receiver.username }}</td>

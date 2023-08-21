@@ -4,10 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
   <header>
-    <a href="/">EnigmaShare</a>
+    <a href="/" class="banner">EnigmaShare</a>
     {% if current_user.is_active %}
     <a href="{{ url_for('auth.logout') }}">Logout</a>
     {% endif %}
@@ -15,11 +16,13 @@
   {% with messages = get_flashed_messages() %}
   <ul>
     {% for message in messages%}
-      <p>{{ message }}</p>
+      <p class="flash-message">{{ message }}</p>
     {% endfor %}
   </ul>
   {% endwith %}
-  {% block content %}
-  {% endblock content %}
+  <div class="container">
+    {% block content %}
+    {% endblock content %}
+  </div>
 </body>
 </html>

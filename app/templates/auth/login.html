@@ -1,18 +1,26 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Login Page</h1>
-<form action="" method="post">
-  {{ form.hidden_tag()}}
-  <p>
-    {{ form.username.label }} <br>
-    {{ form.username() }}
-  </p>
-  <p>
-    {{ form.password.label }} <br>
-    {{ form.password() }}
-  </p>
-  <p>
-    {{ form.login() }}
-  </p>
-</form>
+<div class="form-container">
+  <div class="auth-links">
+    <a href="{{ url_for('auth.login') }}">Login</a>
+    <a href="{{ url_for('auth.signup') }}">Sign up</a>
+  </div>
+  <h2>
+    Login into your account
+  </h2>
+  <form action="" method="post" class="auth-form">
+    {{ form.hidden_tag()}}
+    <p>
+      {{ form.username.label }} <br>
+      {{ form.username() }}
+    </p>
+    <p>
+      {{ form.password.label }} <br>
+      {{ form.password() }}
+    </p>
+    <p>
+      {{ form.login() }}
+    </p>
+  </form>
+</div>
 {% endblock content %}
